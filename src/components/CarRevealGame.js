@@ -7,6 +7,7 @@ const CarRevealGame = () => {
   const carCanvasRef = useRef(null);
   const carPositionRef = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const movementRef = useRef({ forward: false, reverse: false });
+  const turningRef = useRef({ left: false, right: false });
   const angleRef = useRef(0); // 0 radians is pointing right
   const lastUpdateTimeRef = useRef(0);
   const audioRef = useRef(null);
@@ -96,7 +97,8 @@ const CarRevealGame = () => {
       lastUpdateTimeRef.current = currentTime;
 
       const moveDistance = pixelsPerSecond * deltaTime;
-      
+      const turnAngle = 2 * deltaTime; // Adjust this value to change turning speed
+
       let dx = 0;
       let dy = 0;
 
@@ -107,6 +109,13 @@ const CarRevealGame = () => {
       if (movementRef.current.reverse) {
         dx -= Math.cos(angleRef.current) * moveDistance;
         dy -= Math.sin(angleRef.current) * moveDistance;
+      }
+
+      if (turningRef.current.left) {
+        angleRef.current -= turnAngle;
+      }
+      if (turningRef.current.right) {
+        angleRef.current += turnAngle;
       }
 
       if (dx !== 0 || dy !== 0) {
@@ -132,7 +141,8 @@ const CarRevealGame = () => {
         dx,
         dy,
         newSpeed,
-        isMoving: movementRef.current.forward || movementRef.current.reverse
+        isMoving: movementRef.current.forward || movementRef.current.reverse,
+        isTurning: turningRef.current.left || turningRef.current.right
       });
 
       lastPositionRef.current = { ...carPositionRef.current };
@@ -146,13 +156,20 @@ const CarRevealGame = () => {
       switch (e.key.toLowerCase()) {
         case 'w':
           movementRef.current.forward = true;
-          playSound();
           break;
-        case 's': movementRef.current.reverse = true; break;
-        case 'a': angleRef.current -= 0.1; break;
-        case 'd': angleRef.current += 0.1; break;
-        default: break;
+        case 's':
+          movementRef.current.reverse = true;
+          break;
+        case 'a':
+          turningRef.current.left = true;
+          break;
+        case 'd':
+          turningRef.current.right = true;
+          break;
+        default:
+          break;
       }
+      playSound();
     };
 
     const handleKeyUp = (e) => {
@@ -160,16 +177,29 @@ const CarRevealGame = () => {
       switch (e.key.toLowerCase()) {
         case 'w':
           movementRef.current.forward = false;
-          stopSound();
           break;
-        case 's': movementRef.current.reverse = false; break;
-        default: break;
+        case 's':
+          movementRef.current.reverse = false;
+          break;
+        case 'a':
+          turningRef.current.left = false;
+          break;
+        case 'd':
+          turningRef.current.right = false;
+          break;
+        default:
+          break;
+      }
+      
+      // Check if all movement and turning keys are released
+      if (!movementRef.current.forward && !movementRef.current.reverse &&
+          !turningRef.current.left && !turningRef.current.right) {
+        stopSound();
       }
     };
 
     const playSound = () => {
-      if (audioRef.current) {
-        audioRef.current.currentTime = 0;
+      if (audioRef.current && audioRef.current.paused) {
         audioRef.current.play().catch(e => console.error("Error playing audio:", e));
       }
     };
