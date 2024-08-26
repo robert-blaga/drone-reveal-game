@@ -68,7 +68,7 @@ const CarRevealGame = () => {
     const updateRevealCanvas = () => {
       revealCtx.save();
       revealCtx.beginPath();
-      revealCtx.arc(carPositionRef.current.x, carPositionRef.current.y, 25, 0, Math.PI * 2);
+      revealCtx.arc(carPositionRef.current.x, carPositionRef.current.y, 50, 0, Math.PI * 2); // Increased radius from 25 to 50
       revealCtx.clip();
       revealCtx.drawImage(revealImage, 0, 0, canvas.width, canvas.height);
       revealCtx.restore();
@@ -153,17 +153,17 @@ const CarRevealGame = () => {
 
     const handleKeyDown = (e) => {
       console.log("Key pressed:", e.key);
-      switch (e.key.toLowerCase()) {
-        case 'w':
+      switch (e.key) {
+        case 'ArrowUp':
           movementRef.current.forward = true;
           break;
-        case 's':
+        case 'ArrowDown':
           movementRef.current.reverse = true;
           break;
-        case 'a':
+        case 'ArrowLeft':
           turningRef.current.left = true;
           break;
-        case 'd':
+        case 'ArrowRight':
           turningRef.current.right = true;
           break;
         default:
@@ -174,17 +174,17 @@ const CarRevealGame = () => {
 
     const handleKeyUp = (e) => {
       console.log("Key released:", e.key);
-      switch (e.key.toLowerCase()) {
-        case 'w':
+      switch (e.key) {
+        case 'ArrowUp':
           movementRef.current.forward = false;
           break;
-        case 's':
+        case 'ArrowDown':
           movementRef.current.reverse = false;
           break;
-        case 'a':
+        case 'ArrowLeft':
           turningRef.current.left = false;
           break;
-        case 'd':
+        case 'ArrowRight':
           turningRef.current.right = false;
           break;
         default:
