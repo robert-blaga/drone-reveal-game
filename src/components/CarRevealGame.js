@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import GameDashboard from './GameDashboard';
+import GameStart from './GameStart';
 
 const CarRevealGame = () => {
   const canvasRef = useRef(null);
@@ -16,6 +17,11 @@ const CarRevealGame = () => {
   const totalPixelsRef = useRef(0);
   const revealedPixelsRef = useRef(0);
   const lastPositionRef = useRef({ x: 0, y: 0 });
+  const [gameStarted, setGameStarted] = useState(false);
+
+  const handleCountdownEnd = () => {
+    setGameStarted(true);
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -266,6 +272,7 @@ const CarRevealGame = () => {
 
   return (
     <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
+      {!gameStarted && <GameStart onCountdownEnd={handleCountdownEnd} />}
       <canvas
         ref={canvasRef}
         style={{
