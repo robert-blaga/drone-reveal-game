@@ -11,7 +11,6 @@ const CarRevealGame = () => {
   const turningRef = useRef({ left: false, right: false });
   const angleRef = useRef(0); // 0 radians is pointing right
   const lastUpdateTimeRef = useRef(0);
-  const audioRef = useRef(null);
   const [revealedPercentage, setRevealedPercentage] = useState(0);
   const [speed, setSpeed] = useState(0);
   const totalPixelsRef = useRef(0);
@@ -44,14 +43,8 @@ const CarRevealGame = () => {
     revealImage.src = '/images/reveal-image.png';
     carImage.src = '/images/car-image.png';
 
-    // Create the audio element
-    audioRef.current = new Audio('/audio/car_engine.mp3');
-    audioRef.current.loop = true; // Enable looping
-    audioRef.current.load(); // Explicitly load the audio
 
-    // Add event listeners for audio
-    audioRef.current.addEventListener('canplaythrough', () => console.log("Audio can play through"));
-    audioRef.current.addEventListener('error', (e) => console.error("Audio error:", e));
+    
 
     totalPixelsRef.current = canvas.width * canvas.height;
 
@@ -74,7 +67,7 @@ const CarRevealGame = () => {
     const updateRevealCanvas = () => {
       revealCtx.save();
       revealCtx.beginPath();
-      revealCtx.arc(carPositionRef.current.x, carPositionRef.current.y, 50, 0, Math.PI * 2); // Increased radius from 25 to 50
+      revealCtx.arc(carPositionRef.current.x, carPositionRef.current.y, 100, 0, Math.PI * 2); // Increased radius from 25 to 50
       revealCtx.clip();
       revealCtx.drawImage(revealImage, 0, 0, canvas.width, canvas.height);
       revealCtx.restore();
@@ -175,7 +168,7 @@ const CarRevealGame = () => {
         default:
           break;
       }
-      playSound();
+      
     };
 
     const handleKeyUp = (e) => {
@@ -200,22 +193,13 @@ const CarRevealGame = () => {
       // Check if all movement and turning keys are released
       if (!movementRef.current.forward && !movementRef.current.reverse &&
           !turningRef.current.left && !turningRef.current.right) {
-        stopSound();
+        
       }
     };
 
-    const playSound = () => {
-      if (audioRef.current && audioRef.current.paused) {
-        audioRef.current.play().catch(e => console.error("Error playing audio:", e));
-      }
-    };
+    
 
-    const stopSound = () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
-    };
+    
 
     const handleResize = () => {
       canvas.width = window.innerWidth;
@@ -263,10 +247,7 @@ const CarRevealGame = () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
       window.removeEventListener('resize', handleResize);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
+      
     };
   }, []);
 
