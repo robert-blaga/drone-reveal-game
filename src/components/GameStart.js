@@ -12,6 +12,7 @@ const GameStart = ({ onCountdownEnd }) => {
     if (countdown === null) return;
 
     const audio = audioRef.current;
+    audio.volume = 0.05;
     audio.play().catch(e => console.error("Error playing audio:", e));
 
     const timer = setInterval(() => {
