@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
+import './GameStart.css';
 
 const GameStart = ({ onCountdownEnd }) => {
   const [countdown, setCountdown] = useState(null);
+  const [showInstructions, setShowInstructions] = useState(true);
   const audioRef = useRef(new Audio('/audio/game_start.mp3'));
 
   const startCountdown = () => {
+    setShowInstructions(false);
     setCountdown(3);
   };
 
@@ -33,22 +36,27 @@ const GameStart = ({ onCountdownEnd }) => {
     };
   }, [countdown, onCountdownEnd]);
 
+  if (!showInstructions && countdown === null) return null;
+
   return (
-    <div
-      onClick={startCountdown}
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        fontSize: '72px',
-        color: 'white',
-        textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
-        zIndex: 1000,
-        cursor: 'pointer'
-      }}
-    >
-      {countdown === null ? 'Click to Start' : countdown > 0 ? countdown : 'GO!'}
+    <div className="game-start-overlay">
+      {showInstructions ? (
+        <div className="start-container">
+          <div className="game-instructions">
+            <h2 className="how-to-play">HOW TO PLAY</h2>
+            <div className="instruction-list">
+              <p>Use <span className="key">↑</span><span className="key">↓</span><span className="key">←</span><span className="key">→</span> keyboard keys to move the Paintbrush and reveal the hidden image and the passcode for the next section.</p>
+            </div>
+          </div>
+          <button className="start-button" onClick={startCountdown}>
+            Start Game
+          </button>
+        </div>
+      ) : (
+        <div className="countdown">
+          {countdown > 0 ? countdown : 'GO!'}
+        </div>
+      )}
     </div>
   );
 };

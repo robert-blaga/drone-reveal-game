@@ -1,0 +1,99 @@
+.game-start-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.how-to-play {
+  color: white;
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0 0 20px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.game-instructions {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 30px 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  color: white;
+  max-width: 400px;
+}
+
+.game-instructions h2 {
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.instruction-list {
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.instruction-list p {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  align-items: center;
+}
+
+.key {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 0 2px;
+  display: inline-block;
+}
+
+.start-button {
+  background-color: #ff5e00;
+  font-size: 24px;
+  padding: 15px 40px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  margin-top: 10px;
+}
+
+.start-button:hover {
+  background-color: #e65500;
+  transform: scale(1.05);
+}
+
+.countdown {
+  font-size: 120px;
+  animation: pulse 1s infinite;
+  color: white;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+} 
